@@ -1,0 +1,111 @@
+class Bank:
+
+    #class variables
+    running_balance = 0.0
+    initial_balance = 0.0
+    trans_num = 0
+
+#Function to deposit money
+    def deposit(self, num):
+        try:
+            num = float(num)
+        except ValueError:
+            print("Invalid number! Quitting. . .")
+            quit()
+        if (self.initial_balance == self.running_balance):
+            self.running_balance = self.initial_balance + num
+            self.track_transaction("d")
+            self.initial_balance = self.running_balance
+            print("Your new balance is", bank.running_balance, "dollars.\n\nContinue Banking? Y/N")
+            return self.running_balance
+        else:
+            self.running_balance = self.running_balance + num
+            print("Your new balance is", bank.running_balance, "dollars.\n\nContinue Banking? Y/N")
+            return self.running_balance
+        
+#function to withdraw money
+    def withdrawal(self, num):
+        try:
+            num = float(num)
+        except ValueError:
+            print("Invalid number! Quitting. . .")
+            quit()
+        
+        if(self.initial_balance - num < 0.0):
+            return print("You pulled out", (num - self.running_balance), "too many!\nReturn to main menu? Y/N")
+        elif self.initial_balance - num > 0:
+            self.running_balance = self.running_balance - num
+            self.track_transaction("w")
+            self.initial_balance = self.running_balance
+            print("Your new balance is", bank.running_balance, "dollars.\n\nContinue Banking? Y/N")
+            return self.running_balance
+        
+#function to track transactions in txt file  
+    def track_transaction(self, code):
+        deposit = self.running_balance - self.initial_balance
+        withdrawal = self.initial_balance - self.running_balance
+        if self.trans_num == 0:
+            if code == "d":
+                with open('transactions.txt', 'w') as file:
+                    file.write(f"A deposit of {deposit} was made.\nNew Balance {self.running_balance}\n")
+                    self.trans_num = 1
+            elif code == "w":
+                with open('transactions.txt', 'w') as file:
+                    file.write(f"A withdrawal of {withdrawal} was made.\nNew Balance {self.running_balance}\n")
+                    self.trans_num = 1
+        else:
+            if code == "d":
+                with open('transactions.txt', 'a') as file:
+                    file.write(f"A deposit of {deposit} was made.\nNew Balance {self.running_balance}\n")
+                    self.trans_num = 1
+            elif code == "w":
+                with open('transactions.txt', 'a') as file:
+                    file.write(f"A withdrawal of {withdrawal} was made.\nNew Balance {self.running_balance}\n")
+                    self.trans_num = 1
+
+#creating instance of class
+bank = Bank()
+
+status = 0
+
+#looping through until client wants to exit
+while True:
+    
+    if status == 1:
+        action = input("Welcome to the Bank!\nWhat would you like to do?\nDeposit\nWithdraw\nInquiry\nExit\n")
+        
+    else:
+        action = input("Welcome back to the main Menu!\nWhat would you like to do?\nDeposit\nWithdraw\nInquiry\nExit\n")
+
+    if action == "withdraw":
+        take = input("How much would you like to withdraw? ")
+        bank.withdrawal(float(take))
+        a = input()
+        if a == "y":
+            status = 2
+        elif a == "n":
+            print("Thank you for banking with us today!\nSee you soon!")
+            quit()
+    elif action == "deposit":
+        give = input("How much would you like to deposit? ")
+        bank.deposit(float(give))
+        a = input()
+        if a == "y":
+            status = 2
+        elif a == "n":
+            print("Thank you for banking with us today!\nSee you soon!")
+            quit()
+    elif action == "inquiry":
+        print("Your current balance is", bank.running_balance, "dollars.\n\nContinue Banking? Y/N")
+        a = input()
+        if a == "y":
+            status = 2
+        elif a == "n":
+            print("Thank you for banking with us today!\nSee you soon!")
+            quit()
+    elif action == "quit":
+        print("Thank you for banking with us today!\nSee you soon!")
+        quit()        
+    else:
+        print("Invalid input. Exiting. Good Bye!")
+        quit()
